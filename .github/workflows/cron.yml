@@ -1,0 +1,30 @@
+name: Cron Job Update
+# Controls when the action will run. Triggers the workflow once every day at 15:00 UTC
+on:
+  schedule:
+    - cron: '30 22 * * 5'
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Clone Clean Data 
+        run: git clone https://github.com/Piphi5/caltech26-map.git
+      - name: Run Python Script
+        run: |
+          pip install -r requirements.txt
+          python get_data.py ${{ secrets.SPREADSHEETURL }} ${{ secrets.APIKEY }}
+      - name: Push html to website
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'caltech26-map'
+          destination-github-username: 'Piphi5'
+          destination-repository-name: 'caltech26-map'
+          user-email: uploadingacct71@gmail.com
+          target-branch: main
