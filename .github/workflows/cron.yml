@@ -2,18 +2,22 @@ name: Cron Job Update
 # Controls when the action will run. Triggers the workflow once every day at 15:00 UTC
 on:
   schedule:
-    - cron: '30 22 * * 5'
+    - cron: '00 5 * * 6'
 
 jobs:
   report:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Checkout private map repo
+        uses: actions/checkout@v2
+        with:
+          repository: Piphi5/caltech26-map
+          token: ${{ secrets.PAT }}
+          path: caltech26-map
       - uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Clone Clean Data 
-        run: git clone https://github.com/Piphi5/caltech26-map.git
       - name: Run Python Script
         run: |
           pip install -r requirements.txt
