@@ -1,8 +1,11 @@
 name: Cron Job Update
 # Controls when the action will run. Triggers the workflow once every day at 15:00 UTC
 on:
+  push:
+    branches:
+      - main
   schedule:
-    - cron: '00 5 * * 6'
+    - cron: '30 4 * * *'
 
 jobs:
   report:
