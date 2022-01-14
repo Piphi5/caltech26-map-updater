@@ -32,6 +32,11 @@ urlData = requests.get(data_url).content
 df = pd.read_csv(io.StringIO(urlData.decode("utf-8")))
 df = df.drop([col for col in df.columns if col != "Hometown"], axis=1)
 
+# Raise Exception if charged price may get too large
+# 200 transactions = $1 (Max limit)
+if len(set(df["Hometown"]) ^ set(location_dict.keys())) >= 200:
+    raise Exception("Too many places to process.")
+
 # Setup location name to latitude longitude functions
 geolocator = GoogleV3(api_key=api_key)
 vec_address_converter = np.vectorize(partial(get_latlon, geolocator, location_dict))
