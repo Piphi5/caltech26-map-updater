@@ -21,6 +21,7 @@ def get_latlon(geolocator, location_dict, place):
 # Get private strings
 data_url = sys.argv[1]
 api_key = sys.argv[2]
+map_directory = sys.argv[3]
 
 locations_df = pd.read_csv("locations.csv")
 locations_tuple = list(locations_df.to_records(index=False))
@@ -47,7 +48,7 @@ for coord in zip(lat, lon):
 m.fit_bounds(m.get_bounds())
 
 # Save map to html
-m.save("caltech26-map/index.html")
+m.save(f"caltech26-map/{map_directory}/index.html")
 
 # Save downloaded locations to a CSV
 updated_data = [(key, coords[0], coords[1]) for key, coords in location_dict.items()]

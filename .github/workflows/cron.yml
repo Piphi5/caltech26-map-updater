@@ -21,7 +21,7 @@ jobs:
       - name: Run Python Script
         run: |
           pip install -r requirements.txt
-          python get_data.py ${{ secrets.SPREADSHEETURL }} ${{ secrets.APIKEY }}
+          python get_data.py ${{ secrets.SPREADSHEETURL }} ${{ secrets.APIKEY }} ${{ secrets.HASH_DIR }}
       - name: Push html to website
         uses: cpina/github-action-push-to-another-repository@main
         env:
