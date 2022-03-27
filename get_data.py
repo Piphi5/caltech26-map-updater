@@ -15,9 +15,11 @@ def get_latlon(geolocator, location_dict, place):
         return location_dict[place]
     else:
         location = geolocator.geocode(place)
-        location_dict[place] = (location.latitude, location.longitude)
-        return location.latitude, location.longitude
-
+        if not pd.isna(location):
+            location_dict[place] = (location.latitude, location.longitude)
+            return location.latitude, location.longitude
+        else:
+            return np.nan, np.nan
 
 def format_info(info):
     if pd.isna(info):
@@ -79,6 +81,8 @@ for lat, lon, name, insta, snap, discord, commited, other in zip(
     df["Commited? (Y/N)"],
     df["Other"],
 ):
+    if pd.isna(lat) or pd.isna(lon):
+        continue
     icon = "user"
     if type(commited) is str and commited:
         if "Y" in commited:
